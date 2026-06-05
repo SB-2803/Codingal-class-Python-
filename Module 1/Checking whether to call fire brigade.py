@@ -1,0 +1,5 @@
+name = input("Enter your name:")
+print("Today we will check whether you should call the fire brigade or not. To do please fill the following:")
+fire = input("Enter yes if you can see and fire or bright light around you:")
+smoke = input("Enter yes if you can see or smell and kind of smoke around you:")
+place = input("E     ")
