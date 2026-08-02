@@ -10,7 +10,7 @@ print("Amt. of time for which it was done in mins:",habit[2])
 print("\nDay 1:", record[0])
 print("Day 7:", record[6])
  
-ffd = record[0:4]
+ffd = record[:4]
 print("First five days:", ffd)
  
 wed = record[5:7]
