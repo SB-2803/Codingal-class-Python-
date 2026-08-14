@@ -16,7 +16,7 @@ if del_name in phonebook:
     del phonebook[del_name]
     print(del_name,"Deleted Permanently!!")
 else:
-    print("Cannot delete. Not not found")
+    print("Cannot delete. Not found")
 
 #Print updated notebook
 print("\nUpdated phonebook:",phonebook)

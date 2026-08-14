@@ -7,7 +7,7 @@ inventory = {item: count for item,count in zip(items,stock_counts)}
 print("Full inventory:",inventory)
 
 #Filter only the items that are still in stock
-in_stock_items = [item for item in items if inventory[item]>0]
+in_stock_items = [i for i in items if inventory[i]>0]
 print("In stock items:",in_stock_items)
 
 #Ask the buyer what they want
