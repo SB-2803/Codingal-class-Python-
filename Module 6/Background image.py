@@ -5,10 +5,11 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 500,500
 
 #Initialize display surface and set title
 display_surface = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+pygame.display.set_caption('Adding image and background image!!')
 
 #Load and scale images directly
 bg_image = pygame.transform.scale(
-    pygame.image.load('bg.jfif').convert(),(SCREEN_HEIGHT,SCREEN_WIDTH))
+    pygame.image.load('bg.jpg').convert(),(SCREEN_HEIGHT,SCREEN_WIDTH))
 penguin_image = pygame.transform.scale(
     pygame.image.load('p.png').convert_alpha(),(250,250))
 penguin_rect = penguin_image.get_rect(center=(SCREEN_WIDTH//2,SCREEN_HEIGHT//2 - 30))#250,220
