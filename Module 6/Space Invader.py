@@ -64,7 +64,7 @@ overfont = pygame.font.Font("freesansbold.ttf",64) #enemy's width is 64
 
 def show_score(x,y):
     #Display the current score on the screen.
-    score = font.render("Score:", scorevalue, True,'white')
+    score = font.render("Score:", str(scorevalue), True, (255,255,255))
     screen.blit(score, (x,y))
 
 def game_over_text():
@@ -85,24 +85,24 @@ def fire_bullet(x,y):
 
 def isCollision(enemyx, enemyy, bulletx, bullety):
     #Check if there is a collision between the enemy and a bullet
-    distance = math.sqrt((enemyx - bulletx) ** 2 + (enemyy + bullety) ** 2)
+    distance = math.sqrt((enemyx - bulletx) ** 2 + (enemyy - bullety) ** 2)
     return distance < collisiondistance
 
 #game loop
 running = True
 while running:
-    screen.fill((0,0,0,))
+    screen.fill((0,0,0))
     screen.blit(bg,(0,0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.type == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT:
                 playerxchange = -5
-            if event.type == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT:
                 playerxchange = 5
-            if event.type == pygame.K_SPACE and bulletstate == "ready":
+            if event.key == pygame.K_SPACE and bulletstate == "ready":
                 bulletx = playerx
                 fire_bullet(bulletx,bullety)
         if event.type == pygame.KEYUP and event.key in[pygame.K_LEFT, pygame.K_RIGHT]:
@@ -129,7 +129,7 @@ while running:
         if isCollision(enemyx[i], enemyy[i], bulletx, bullety):
             bullety = playerstarty
             bulletstate = "ready"
-            score_value += 1
+            scorevalue += 1
             enemyx[i] = random.randint(0, screenwidth - 64)
             enemyy[i] = random.randint(enemystarty_min, enemystarty_max)
 
