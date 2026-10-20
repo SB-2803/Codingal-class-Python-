@@ -6,7 +6,7 @@ import math
 screenwidth = 800
 screenheight = 500
 playerstartx = 370
-playerstarty = 300
+playerstarty = 380
 enemystarty_min = 50
 enemystarty_max = 150
 enemyspeedx = 4
@@ -69,7 +69,7 @@ def show_score(x,y):
 
 def game_over_text():
     #display the game over text
-    over_text = over_text.render("GAME OVER",True,'white')
+    over_text = overfont.render("GAME OVER",True,'white')
     screen.blit(over_text, (200,255))
 
 def player(x,y):
@@ -121,7 +121,7 @@ while running:
             break
 
         enemyx[i] += enemyxchange[i]
-        if enemyx[i] <= 0 or enemy[i] >= screenwidth - 64:
+        if enemyx[i] <= 0 or enemyx[i] >= screenwidth - 64:
             enemyxchange[i] *= -1
             enemyy[i] += enemyychange[i]
 
