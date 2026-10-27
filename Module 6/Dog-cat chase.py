@@ -2,7 +2,7 @@ import pygame
 import random
 import math
 
-#Constants
+# Constants
 screenwidth = 800
 screenheight = 500
 playerstartx = 370
@@ -13,112 +13,137 @@ enemyspeedx = 4
 enemyspeedy = 40
 collisiondistance = 20
 
+# Colors
+BLACK = (0, 0, 0)
+
+# Initialize pygame
 pygame.init()
-screen = pygame.display.set_mode((screenwidth,screenheight))
+screen = pygame.display.set_mode((screenwidth, screenheight))
 
-#background
-bg = pygame.image.load('bghw.jpg')
+# Background
+bg = pygame.image.load('bg1.webp')
 
-#caption and icon
-pygame.display.set_caption("Cat chase!!")
-icon = pygame.image.load("tree.png")
+# Caption and Icon
+pygame.display.set_caption("Cat chase")
+icon = pygame.image.load('tree.png')
 pygame.display.set_icon(icon)
 
-#player
+# Player
 playerx = playerstartx
-playerimg = pygame.image.load("dog.png")
-small_image = pygame.transform.scale(playerimg, (50, 50))
 playery = playerstarty
 playerxchange = 0
+playerychange = 0  
+playerimg = pygame.image.load('dog.png')
+small_image = pygame.transform.scale(playerimg, (50, 50))
 
-#enemy
+# Enemy Initialization
 enemyimg = []
 enemyx = []
 enemyy = []
 enemyxchange = []
 enemyychange = []
-numofenemies = 7
+numofenemies = 12
 
 for i in range(numofenemies):
-    catimage = pygame.image.load("cat.png")
-    enemyimg.append(catimage)
+    catimage = pygame.image.load('cat.png')
     small_image1 = pygame.transform.scale(catimage, (50, 50))
-    enemyx.append(random.randint(0,screenwidth - 50))
-    enemyy.append(random.randint(enemystarty_min,enemystarty_max))
+    enemyimg.append(small_image1)  # Appends the scaled image
+    enemyx.append(random.randint(0, screenwidth - 50))
+    enemyy.append(random.randint(enemystarty_min, enemystarty_max))
     enemyxchange.append(enemyspeedx)
     enemyychange.append(enemyspeedy)
 
-#score 
+# Score
 scorevalue = 0
-font = pygame.font.Font("freesansbold.ttf",32)
+font = pygame.font.Font('freesansbold.ttf', 32)
 textx = 10
 texty = 10
 
-#Game over font
-overfont = pygame.font.Font("freesansbold.ttf",64)
+# Game Over Font
+overfont = pygame.font.Font('freesansbold.ttf', 64)
 
-def show_score(x,y):
-    #Display the current score on the screen.
-    score = font.render("Score:" + str(scorevalue), True,'black')
-    screen.blit(score, (x,y))
+def show_score(x, y):
+    score = font.render("Score: " + str(scorevalue), True, BLACK)
+    screen.blit(score, (x, y))
 
 def game_over_text():
-    #display the game over text
-    over_text = over_text.render("GAME OVER",True,'black')
-    screen.blit(over_text, (200,255))
+    over_text = overfont.render("GAME OVER", True, BLACK)
+    screen.blit(over_text, (200, 255))
 
-def player(x,y):
-    screen.blit(small_image, (x,y))
+def player(x, y):
+    screen.blit(small_image, (x, y))
 
-def enemy(x,y,i):
-    screen.blit(enemyimg[i],(x,y))
+def enemy(x, y, i):
+    screen.blit(enemyimg[i], (x, y))
 
-def isCollision(enemyx, enemyy,):
-    #Check if there is a collision between the enemy and a bullet
-    distance = math.sqrt((enemyx - playerx) ** 2 + (enemyy - playery) ** 2)
+def isCollision(enemyx_val, enemyy_val):
+    # Using ** 2 for squaring values
+    distance = math.sqrt((enemyx_val - playerx)**2 + (enemyy_val - playery)**2)
     return distance < collisiondistance
 
-#game loop
+# Game loop setup
 running = True
-while running:
-    screen.fill((0,0,0))
-    screen.blit(bg,(0,0))
+clock = pygame.time.Clock()
 
+while running:
+    # RGB background fill and image blit
+    screen.fill((0, 0, 0))
+    screen.blit(bg, (0, 0))
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 playerxchange = -5
             if event.key == pygame.K_RIGHT:
                 playerxchange = 5
-        if event.type == pygame.KEYUP and event.key in[pygame.K_LEFT, pygame.K_RIGHT]:
-            playerxchange = 0
+            if event.key == pygame.K_UP:    
+                playerychange = -5
+            if event.key == pygame.K_DOWN:     
+                playerychange = 5
 
-    #player movement
+                
+        if event.type == pygame.KEYUP:
+            if event.key in [pygame.K_LEFT, pygame.K_RIGHT]:
+                playerxchange = 0
+            if event.key in [pygame.K_UP, pygame.K_DOWN]:
+                            playerychange = 0
+            
+
+    # Player movement & boundary check
     playerx += playerxchange
-    playerx = max(0,min(playerx,screenwidth-64))
+    playerx = max(0, min(playerx, screenwidth - 50))
+    playery += playerychange
+    playery = max(0, min(playery, screenheight - 50))
 
-    #enemy movement
+    # Enemy movement
     for i in range(numofenemies):
-        if enemyy[i] > 340: #Game over Condition
+        # Game over Condition
+        if enemyy[i] > 240:
             for j in range(numofenemies):
                 enemyy[j] = 2000
             game_over_text()
             break
 
         enemyx[i] += enemyxchange[i]
-        if enemyx[i] <= 0 or enemyx[i] >= screenwidth - 64:
+        if enemyx[i] <= 0 or enemyx[i] >= screenwidth - 50:
             enemyxchange[i] *= -1
             enemyy[i] += enemyychange[i]
 
-        #Collision check
+        # Collision check
         if isCollision(enemyx[i], enemyy[i]):
-            enemyx[i] = random.randint(0, screenwidth - 64)
+            scorevalue += 1  # Increments score when hit
+            enemyx[i] = random.randint(0, screenwidth - 50)
             enemyy[i] = random.randint(enemystarty_min, enemystarty_max)
 
         enemy(enemyx[i], enemyy[i], i)
 
     player(playerx, playery)
     show_score(textx, texty)
+    
     pygame.display.update()
+    clock.tick(60)  # Keep the game running at a smooth 60 FPS
+
+pygame.quit()
