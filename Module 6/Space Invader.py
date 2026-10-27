@@ -64,7 +64,7 @@ overfont = pygame.font.Font("freesansbold.ttf",64) #enemy's width is 64
 
 def show_score(x,y):
     #Display the current score on the screen.
-    score = font.render("Score:", str(scorevalue), True, (255,255,255))
+    score = font.render("Score:" + str(scorevalue), True, (255,255,255))
     screen.blit(score, (x,y))
 
 def game_over_text():
