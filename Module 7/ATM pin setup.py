@@ -28,9 +28,9 @@ for i in range(4):
         keypad_frame.columnconfigure(j, weight=1, minsize=70)
         cell = Frame(master=keypad_frame, relief=RAISED, borderwidth=1)
         cell.grid(row=i,column=j,sticky="nsew")
-        number_label = Label( master=cell, text=numbers[i][j], bg="#d0efff")
+        number_label = Label(master=cell, text=numbers[i][j], bg="#d0efff")
         number_label.pack(padx=8,pady=8)
-
+        
 confirm_button = Button(root,text="Set ATM PIN",command=confirm_pin,bg="red", fg="white")
 message_box = Text(root,height=2,width=42,bg="#BEBEBE",fg="black")
 
